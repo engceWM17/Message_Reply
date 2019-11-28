@@ -4,13 +4,30 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
+import com.example.message.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
+import com.example.message.Contact
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+    private val myContact=Contact("Eng","0112233445")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        //Dispaly UI
+        binding=DataBindingUtil.setContentView(this,R.layout.activity_main)
+        //setContentView(R.layout.activity_main)
+
+        //Assign attribute of oal variable to UI variable
+        binding.contact=myContact
+        binding.buttonUpdate.setOnClickListener {
+            binding.apply {
+                contact?.name="my new name"
+                contact?.phone="1111111111"
+                invalidateAll()//refresh the UI
+            }
+        }
 
         buttonSend.setOnClickListener {
             sendMessage()
